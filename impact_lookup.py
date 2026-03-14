@@ -72,8 +72,7 @@ parser.add_argument(
 parser.add_argument(
     "--email",
     type=str,
-    #default=os.getenv("NCBI_EMAIL"),
-    default="jjacobs@atcc.org",
+    default=os.getenv("NCBI_EMAIL"),
     help="Email address required by NCBI Entrez for identification. Default is is to pull NCBI_EMAIL from the ENV"
 )
 
