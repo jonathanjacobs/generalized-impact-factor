@@ -1,0 +1,15 @@
+# Settings for Ruff, which checks and formats Python code consistently.
+# These rules help identify common coding mistakes and keep Python files readable.
+#
+# Example commands, run from the repository's top-level folder:
+#   ruff check .          Check Python files for common problems.
+#   ruff format --check . Check whether Python files follow the shared format.
+#   ruff format .         Apply the shared format to Python files.
+line-length = 80
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
+
+[format]
+indent-style = "space"
+quote-style = "double"

@@ -1,0 +1,6 @@
+# Python environment for impact_lookup.py.
+# Create with: python3 -m venv .venv && source .venv/bin/activate && pip install -r environments/requirements.txt
+biopython>=1.78
+requests>=2.32.2
+titlecase>=2.4.1
+pytest>=8.0

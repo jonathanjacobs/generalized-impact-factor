@@ -1,0 +1,19 @@
+# Generated run outputs (see docs/DATA_GOVERNANCE.md — results do not belong in Git)
+*.tsv
+
+# Local or secret settings (see docs/DATA_GOVERNANCE.md)
+*.local.yaml
+*.local.yml
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/

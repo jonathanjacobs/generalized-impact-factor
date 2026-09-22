@@ -1,0 +1,105 @@
+name: Code style and repository checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  style:
+    name: Check readable code and local settings
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Identify languages in the repository
+        id: languages
+        shell: bash
+        run: |
+          if git ls-files '*.py' | grep -q .; then
+            echo "python=true" >> "${GITHUB_OUTPUT}"
+          fi
+          if git ls-files '*.R' | grep -q .; then
+            echo "r=true" >> "${GITHUB_OUTPUT}"
+          fi
+          if git ls-files '*.sh' | grep -q .; then
+            echo "bash=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Set up Python
+        if: always() && steps.languages.outputs.python == 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install Ruff
+        if: always() && steps.languages.outputs.python == 'true'
+        run: python -m pip install ruff==0.16.1
+
+      - name: Check Python code
+        if: always() && steps.languages.outputs.python == 'true'
+        run: ruff check --output-format=github .
+
+      - name: Check Python formatting
+        if: always() && steps.languages.outputs.python == 'true'
+        run: ruff format --check .
+
+      - name: Set up R
+        if: always() && steps.languages.outputs.r == 'true'
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R checking tools
+        if: always() && steps.languages.outputs.r == 'true'
+        run: Rscript -e 'install.packages(c("lintr", "styler"), repos = "https://cloud.r-project.org")'
+
+      - name: Check R code
+        if: always() && steps.languages.outputs.r == 'true'
+        run: Rscript -e 'lints <- lintr::lint_dir("."); print(lints); quit(status = as.integer(length(lints) > 0))'
+
+      - name: Check R formatting
+        if: always() && steps.languages.outputs.r == 'true'
+        run: Rscript -e 'styler::style_dir(".", filetype = "R", dry = "fail")'
+
+      - name: Install Bash checking tools
+        if: always() && steps.languages.outputs.bash == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes shellcheck shfmt
+
+      - name: Check Bash code
+        if: always() && steps.languages.outputs.bash == 'true'
+        run: git ls-files -z '*.sh' | xargs -0 --no-run-if-empty shellcheck
+
+      - name: Check Bash formatting
+        if: always() && steps.languages.outputs.bash == 'true'
+        run: git ls-files -z '*.sh' | xargs -0 --no-run-if-empty shfmt -d
+
+      - name: Check for committed local settings
+        if: always()
+        shell: bash
+        run: |
+          tracked_local_files="$(
+            git ls-files |
+              grep -E '(^|/)(\.env($|\.)|[^/]+\.local\.(yaml|yml|json)$)' || true
+          )"
+          if [[ -n "${tracked_local_files}" ]]; then
+            echo "::error::Local settings files are tracked by Git. Move safe examples to config/ and remove local values from Git."
+            printf '%s\n' "${tracked_local_files}"
+            exit 1
+          fi
+
+      - name: Explain the result
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Code style and repository checks"
+            echo
+            echo "A finding should be corrected or explained before this check is made required."
+            echo "Repository owners decide through branch protection whether this workflow blocks merging."
+            echo "A successful check is not scientific validation."
+          } >> "${GITHUB_STEP_SUMMARY}"
