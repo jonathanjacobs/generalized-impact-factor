@@ -8,10 +8,10 @@ These instructions apply throughout the repository unless a more specific `AGENT
 
 - Preserve unrelated work already present in the checkout.
 - Consult the "Where information belongs" list below before creating documentation. (This project has not adopted the template's full `docs/DOCUMENTATION_OWNERSHIP.md` matrix — see `docs/GETTING_STARTED.md`'s proportionality guidance in `atcc-dev-template` for why.)
-- Follow `docs/DATA_GOVERNANCE.md` before writing data, metadata, settings, logs, reports, or generated files.
+- Follow `docs/DATA_GOVERNANCE.md` before writing data, metadata, settings, logs, reports, or generated files — this applies to GitHub issues, pull-request text, and comments too, not only files being committed.
 - Follow `docs/THIRD_PARTY.md` before adding a tool, container, reference, database, dataset, or code taken from outside the project. Do not copy outside code into the repository without recording its source and terms.
 - Do not change scientific thresholds, reference choices, identifier mappings, or workflow behavior unless explicitly requested.
-- Keep examples sanitized; never introduce credentials, internal paths, restricted data, or production outputs.
+- Keep examples sanitized; never introduce credentials, internal paths, internal hostnames or server/node names, restricted data, or production outputs — including when pasting a log excerpt or describing a computing environment for a validation-history entry, issue, or commit message. Before publishing any of those, check the text for anything that identifies specific internal infrastructure rather than describing it generically.
 - Do not claim portability, validation, reproducibility, or release readiness without recorded evidence.
 - State skipped checks as plainly as checks that passed.
 - Treat an actual run, log, or tool output as stronger evidence than remembered tool behavior, documentation, or an earlier assertion in conversation.

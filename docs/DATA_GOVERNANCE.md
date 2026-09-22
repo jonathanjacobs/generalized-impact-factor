@@ -13,10 +13,12 @@ Use Git for code, documentation, and small approved examples. Do not use it as t
 
 ## Keep these out of Git
 
+This applies to any public-facing surface tied to this repository, not only committed files: GitHub issues, pull-request descriptions, comments, and CI logs are just as visible as the repository itself once this remote is public, so treat them with the same care as a commit.
+
 - Raw sequencing data, production sample data, large reference files or indexes, working directories, and production results.
 - Confidential, controlled, proprietary, regulated, or otherwise unapproved data and sample information.
 - Passwords, tokens, private keys, connection details, and other credentials.
-- Logs, reports, or screenshots that reveal restricted information or internal locations that should not be shared.
+- Logs, reports, or screenshots that reveal restricted information or internal locations that should not be shared — this includes internal hostnames, server or node names, IP addresses, and internal domain names (for example, a specific ATCC HPC cluster node name). When a document needs to describe where something ran, describe the computing environment generically (e.g. "an internal ATCC HPC host," "a shared compute node") instead of naming the specific machine, even in a place that feels as routine as a validation-history entry, a GitHub issue, or a log excerpt pasted for debugging.
 
 If restricted material is added accidentally, stop sharing it and follow the appropriate ATCC response process. Deleting the latest copy does not remove it from Git history.
 
